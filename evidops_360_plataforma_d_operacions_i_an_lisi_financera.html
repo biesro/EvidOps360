@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="ca" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EvidOps 360 | Plataforma d'Operacions i Anàlisi Financera</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+            },
+            tech: {
+              bg: '#080d1a',
+              card: '#0f172a',
+              border: '#1e293b',
+              accent: '#38bdf8',
+              emerald: '#10b981',
+              amber: '#f59e0b',
+              violet: '#8b5cf6'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Chart.js CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Estilització barres de desplaçament */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #080d1a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+    /* Controls lliscants personalitzats */
+    input[type=range] {
+      -webkit-appearance: none;
+      height: 6px;
+      border-radius: 6px;
+      background: #1e293b;
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #38bdf8;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+      transition: transform 0.1s ease;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #ffffff !important; color: #0f172a !important; }
+    }
+  </style>
+</head>
+<body class="bg-[#080d1a] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-white">
+
+  <!-- ============================================================ -->
+  <!-- CAPÇALERA EXECUTIVA I NAVEGACIÓ INSTITUCIONAL                -->
+  <!-- ============================================================ -->
+  <header class="border-b border-slate-800 bg-[#0b1329]/95 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Marca & Metadades del Projecte -->
+      <div class="flex items-center space-x-3.5">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 p-0.5 shadow-lg shadow-cyan-500/20 flex items-center justify-center">
+          <div class="w-full h-full bg-[#080d1a] rounded-[10px] flex items-center justify-center">
+            <!-- Icona Radar Logístic SVG -->
+            <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-extrabold text-xl tracking-tight text-white flex items-center gap-1.5">
+              EvidOps <span class="text-cyan-400">360</span>
+            </span>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">
+              Operacions & Finances
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 hidden sm:block">
+            Plataforma Integral de Gestió Logística Prescriptiva i Intel·ligència Operativa
+          </p>
+        </div>
+      </div>
+
+      <!-- Estat Operatiu Corporatiu & Accions -->
+      <div class="flex items-center space-x-3">
+        <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-slate-300 font-medium">SLA Operatiu:</span>
+          <span class="text-emerald-400 font-mono font-bold">99.98%</span>
+        </div>
+
+        <!-- Botó d'Exportació / Impressió -->
+        <button onclick="window.print()" class="no-print px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 hover:border-slate-600 text-slate-200 hover:text-white transition flex items-center gap-2 text-xs font-semibold shadow-sm" title="Exportar o imprimir informe executiu">
+          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+          <span>Exportar Informe PDF</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Barra de Navegació de Pestanyes -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800/80">
+      <nav class="flex space-x-2 sm:space-x-3 overflow-x-auto py-2.5 scrollbar-none" id="main-nav">
+        <button onclick="switchTab('tab-overview')" class="nav-btn active px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          Panell Executiu & KPIs
+        </button>
+        <button onclick="switchTab('tab-pnl')" class="nav-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 4h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Compte d'Explotació Mes a Mes
+        </button>
+        <button onclick="switchTab('tab-simulator')" class="nav-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+          Simulador Financer
+        </button>
+        <button onclick="switchTab('tab-roi')" class="nav-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Calculadora ROI Client
+        </button>
+        <button onclick="switchTab('tab-projections')" class="nav-btn px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+          Projecció Multianual (3 Anys)
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- CONTENIDOR PRINCIPAL DE L'APLICACIÓ                         -->
+  <!-- ============================================================ -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- ============================================================ -->
+    <!-- PESTANYA 1: PANELL EXECUTIU & KPIS                           -->
+    <!-- ============================================================ -->
+    <div id="tab-overview" class="tab-content space-y-6">
+      
+      <!-- Banner Estratègic de la Companyia -->
+      <div class="bg-gradient-to-r from-slate-900 via-[#0d1629] to-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl relative overflow-hidden">
+        <div class="absolute right-0 top-0 w-96 h-full bg-gradient-to-l from-cyan-500/10 to-transparent pointer-events-none"></div>
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+          <div class="lg:col-span-2 space-y-2.5">
+            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold">
+              <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+              Plataforma SaaS B2B • Prescripció Logística d'Alta Eficiència
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Optimització Prescriptiva i Model Financer Integrat
+            </h1>
+            <p class="text-sm text-slate-300 leading-relaxed max-w-2xl">
+              EvidOps 360 resol la ineficiència del transport per carretera (on els marges operatius se situen entre el 3% i el 5%) substituint la intuïció per recomanacions automàtiques d'un sol clic. L'arquitectura sense maquinari addicional maximitza la rendibilitat i la retenció de clients.
+            </p>
+          </div>
+          <div class="bg-slate-950/90 p-4 rounded-xl border border-slate-800/80 flex flex-col justify-center space-y-3">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400">Objectiu d'Explotació (Any 1):</span>
+              <span class="font-bold text-white font-mono">150 vehicles connectats</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+              <div class="bg-gradient-to-r from-cyan-500 to-emerald-400 h-full rounded-full transition-all duration-700" style="width: 100%"></div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-1 border-t border-slate-800/80 text-center">
+              <div>
+                <p class="text-[10px] text-slate-400 uppercase tracking-wider">Marge Brut SaaS</p>
+                <p class="text-base font-bold text-cyan-400 font-mono" id="overview-kpi-gross-margin">86,4%</p>
+              </div>
+              <div>
+                <p class="text-[10px] text-slate-400 uppercase tracking-wider">Punt d'Equilibri</p>
+                <p class="text-base font-bold text-emerald-400 font-mono" id="overview-kpi-breakeven">Mes 6</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quadrícula de Mètriques Clau Any 1 (6 Indicadors Executius) -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+        
+        <!-- Indicador 1: Flota Any 1 -->
+        <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+          <span class="text-[11px] font-medium text-slate-400 block truncate">Flota Any 1</span>
+          <p class="text-xl font-bold text-white mt-1 font-mono" id="card-trucks">150</p>
+          <span class="text-[10px] text-cyan-400 mt-1 block">12 flotes mitjanes</span>
+        </div>
+
+        <!-- Indicador 2: Facturació Total -->
+        <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+          <span class="text-[11px] font-medium text-slate-400 block truncate">Facturació Total</span>
+          <p class="text-xl font-bold text-white mt-1 font-mono" id="card-rev">47.250 €</p>
+          <span class="text-[10px] text-slate-400 mt-1 block">Rampa progressiva</span>
+        </div>
+
+        <!-- Indicador 3: Marge Brut -->
+        <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+          <span class="text-[11px] font-medium text-slate-400 block truncate">Marge Brut</span>
+          <p class="text-xl font-bold text-cyan-400 mt-1 font-mono" id="card-gross">86,4%</p>
+          <span class="text-[10px] text-slate-400 mt-1 block" id="card-gross-abs">40.824 €</span>
+        </div>
+
+        <!-- Indicador 4: Punt d'Equilibri -->
+        <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+          <span class="text-[11px] font-medium text-slate-400 block truncate">Break-Even</span>
+          <p class="text-xl font-bold text-emerald-400 mt-1 font-mono" id="card-be">Mes 6</p>
+          <span class="text-[10px] text-emerald-400/90 mt-1 block" id="card-be-val">+446 € BAI</span>
+        </div>
+
+        <!-- Indicador 5: EBITDA / BAI -->
+        <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+          <span class="text-[11px] font-medium text-slate-400 block truncate">EBITDA / BAI</span>
+          <p class="text-xl font-bold text-emerald-400 mt-1 font-mono" id="card-ebitda">+7.224 €</p>
+          <span class="text-[10px] text-slate-400 mt-1 block" id="card-ebitda-pct">15,3% de marge</span>
+        </div>
+
+        <!-- Indicador 6: Tresoreria Final -->
+        <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+          <span class="text-[11px] font-medium text-slate-400 block truncate">Tresoreria Final</span>
+          <p class="text-xl font-bold text-white mt-1 font-mono" id="card-cash">22.224 €</p>
+          <span class="text-[10px] text-slate-400 mt-1 block">Coixí: 15.000 €</span>
+        </div>
+
+      </div>
+
+      <!-- Desglossament dels 3 Fluxos d'Ingressos & Gràfic Doughnut -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Bloc Esquerre: Targetes d'Ingressos de la Companyia -->
+        <div class="lg:col-span-2 bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div>
+              <h2 class="text-base font-bold text-white">Estructura dels 3 Fluxos d'Ingressos</h2>
+              <p class="text-xs text-slate-400">Model híbrid SaaS: recurrent per vehicle, integració i serveis prèmium</p>
+            </div>
+            <span class="text-xs font-mono px-2.5 py-1 bg-slate-800 text-cyan-400 rounded-lg border border-slate-700">Mix Operatiu Any 1</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1">
+            
+            <!-- Flux 1: Subscripció Recurrent -->
+            <div class="bg-slate-950/80 p-4 rounded-xl border border-slate-800/80 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+                  Subscripció
+                </span>
+                <span class="text-xs font-bold text-cyan-400 font-mono" id="stream-pct-sub">75,6%</span>
+              </div>
+              <p class="text-xl font-black text-white font-mono" id="stream-val-sub">35.700 €</p>
+              <p class="text-[11px] text-slate-400 leading-snug">
+                <strong>35 €/mes per vehicle</strong> connectat. Accés als mòduls de sortida, càrrega 3D i rutes.
+              </p>
+            </div>
+
+            <!-- Flux 2: Set-up i Integració -->
+            <div class="bg-slate-950/80 p-4 rounded-xl border border-slate-800/80 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                  Set-up Inicial
+                </span>
+                <span class="text-xs font-bold text-blue-400 font-mono" id="stream-pct-setup">19,0%</span>
+              </div>
+              <p class="text-xl font-black text-white font-mono" id="stream-val-setup">9.000 €</p>
+              <p class="text-[11px] text-slate-400 leading-snug">
+                <strong>750 € per flota</strong> (12 flotes). Integració API directa amb el TMS i sistemes ERP existents.
+              </p>
+            </div>
+
+            <!-- Flux 3: Add-ons i Mòduls Avançats -->
+            <div class="bg-slate-950/80 p-4 rounded-xl border border-slate-800/80 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-indigo-400"></span>
+                  Add-ons Avançats
+                </span>
+                <span class="text-xs font-bold text-indigo-400 font-mono" id="stream-pct-addons">5,4%</span>
+              </div>
+              <p class="text-xl font-black text-white font-mono" id="stream-val-addons">2.550 €</p>
+              <p class="text-[11px] text-slate-400 leading-snug">
+                <strong>2,50 €/mes per vehicle</strong>. Tramitació duanera express i telemetria per a cadena de fred.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- Barra de Proporció Visual -->
+          <div class="pt-2">
+            <div class="w-full bg-slate-800 h-3 rounded-full flex overflow-hidden">
+              <div id="bar-stream-sub" class="bg-cyan-400 h-full transition-all duration-500" style="width: 75.6%"></div>
+              <div id="bar-stream-setup" class="bg-blue-500 h-full transition-all duration-500" style="width: 19.0%"></div>
+              <div id="bar-stream-addons" class="bg-indigo-400 h-full transition-all duration-500" style="width: 5.4%"></div>
+            </div>
+            <div class="flex justify-between text-[11px] text-slate-400 mt-1.5 font-mono">
+              <span class="text-cyan-400">■ 75,6% Recurrent</span>
+              <span class="text-blue-400">■ 19,0% Integració</span>
+              <span class="text-indigo-400">■ 5,4% Add-ons</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bloc Dret: Gràfic Doughnut Chart.js -->
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between">
+          <div>
+            <h2 class="text-base font-bold text-white border-b border-slate-800 pb-2">Distribució Porcentual</h2>
+            <div class="h-48 mt-3 relative">
+              <canvas id="revenueDoughnutChart"></canvas>
+            </div>
+          </div>
+          <div class="p-3 bg-slate-950/70 rounded-xl border border-slate-800 text-[11px] text-slate-400 mt-2">
+            Model d'alta estabilitat financera: el 81% del flux correspon a ingressos directament recurrents d'alta retenció.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Desglossament Tècnic de Costos Variables d'Enginyeria (6,30 € / camió) -->
+      <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+          <div>
+            <h2 class="text-base font-bold text-white">Justificació Tècnica dels Costos Variables d'Enginyeria de Dades</h2>
+            <p class="text-xs text-slate-400">Consum d'infraestructura cloud, APIs cartogràfiques i inferència d'IA per vehicle actiu</p>
+          </div>
+          <div class="text-xs font-mono font-bold px-3 py-1 bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded-lg">
+            Total Unitari: 6,30 € / vehicle / mes
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+          
+          <!-- Component 1 -->
+          <div class="p-4 bg-slate-950/70 rounded-xl border border-slate-800/80 space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-cyan-400">1. APIs Cartografia & Trànsit</span>
+              <span class="font-mono text-xs font-bold text-white bg-slate-800 px-2 py-0.5 rounded">2,50 € / mes</span>
+            </div>
+            <p class="text-xs text-slate-300">
+              Integració amb proveïdors cartogràfics especialitzats en transport pesat (Here/TomTom Routes). Càlcul de restriccions d'altura, pes i velocitats reals per a la Sortida Intel·ligent.
+            </p>
+            <div class="text-[10px] text-slate-400 font-mono">Cost anualitzat (150 camions): 2.550 €</div>
+          </div>
+
+          <!-- Component 2 -->
+          <div class="p-4 bg-slate-950/70 rounded-xl border border-slate-800/80 space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-blue-400">2. IA de Veu & Traducció NLP</span>
+              <span class="font-mono text-xs font-bold text-white bg-slate-800 px-2 py-0.5 rounded">1,80 € / mes</span>
+            </div>
+            <p class="text-xs text-slate-300">
+              Models de transcripció i traducció automàtica bidireccional per a la Torre de Control (operador a xofer en el seu idioma natiu) i síntesi de veu (TTS) sense distracció al volant.
+            </p>
+            <div class="text-[10px] text-slate-400 font-mono">Cost anualitzat (150 camions): 1.836 €</div>
+          </div>
+
+          <!-- Component 3 -->
+          <div class="p-4 bg-slate-950/70 rounded-xl border border-slate-800/80 space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-indigo-400">3. Còmput Cloud & Algorisme 3D</span>
+              <span class="font-mono text-xs font-bold text-white bg-slate-800 px-2 py-0.5 rounded">2,00 € / mes</span>
+            </div>
+            <p class="text-xs text-slate-300">
+              Càlcul d'optimització volumètrica combinatòria (Tetris 3D de palets) a instàncies d'alta computació en el núvol i emmagatzematge de dades de telemetria de sensors (CAN-bus).
+            </p>
+            <div class="text-[10px] text-slate-400 font-mono">Cost anualitzat (150 camions): 2.040 €</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PESTANYA 2: COMPTE D'EXPLOTACIÓ MES A MES (MODEL UAB)         -->
+    <!-- ============================================================ -->
+    <div id="tab-pnl" class="tab-content hidden space-y-6">
+      
+      <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-bold text-white">Compte d'Explotació Mensual (Mes 1 a Mes 12)</h2>
+          <p class="text-xs text-slate-400">
+            Seguint rigorosament la plantilla oficial d'anàlisi financera de la UAB (Ingressos, Variables, Benefici Brut, Fixes, BAI i Tresoreria).
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-xs font-mono text-slate-300 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
+            Fons inicial de maniobra: <strong class="text-cyan-400">15.000 €</strong>
+          </span>
+          <span class="text-xs font-mono text-slate-300 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
+            Despeses fixes: <strong class="text-rose-400">2.800 € / mes</strong>
+          </span>
+        </div>
+      </div>
+
+      <!-- Taula Completa Mes a Mes -->
+      <div class="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-950 text-slate-300 border-b border-slate-800 font-semibold tracking-wide">
+                <th class="py-3 px-3">Mes</th>
+                <th class="py-3 px-2 text-right">Camions Actius</th>
+                <th class="py-3 px-2.5 text-right">Subscripció</th>
+                <th class="py-3 px-2 text-right">Set-up</th>
+                <th class="py-3 px-2 text-right">Add-ons</th>
+                <th class="py-3 px-3 text-right font-bold text-white bg-slate-800/40">Total Ingressos</th>
+                <th class="py-3 px-3 text-right text-amber-400">Despeses Var.</th>
+                <th class="py-3 px-3 text-right font-semibold text-cyan-300">Benefici Brut</th>
+                <th class="py-3 px-2 text-center text-slate-400">Marge Brut</th>
+                <th class="py-3 px-3 text-right text-rose-400">Despeses Fixes</th>
+                <th class="py-3 px-3 text-right font-bold text-emerald-400 bg-slate-800/20">BAI / EBITDA</th>
+                <th class="py-3 px-3 text-right font-bold text-white bg-slate-800/50">Tresoreria Acum.</th>
+              </tr>
+            </thead>
+            <tbody id="pnl-table-rows" class="divide-y divide-slate-800/60 font-mono text-slate-300">
+              <!-- Generat automàticament via JavaScript -->
+            </tbody>
+            <tfoot>
+              <tr class="bg-slate-950 font-bold text-white border-t-2 border-slate-700">
+                <td class="py-3.5 px-3">TOTAL ANY 1</td>
+                <td class="py-3.5 px-2 text-right font-mono text-cyan-400" id="foot-trucks">150</td>
+                <td class="py-3.5 px-2.5 text-right font-mono" id="foot-sub">35.700 €</td>
+                <td class="py-3.5 px-2 text-right font-mono" id="foot-setup">9.000 €</td>
+                <td class="py-3.5 px-2 text-right font-mono" id="foot-addons">2.550 €</td>
+                <td class="py-3.5 px-3 text-right font-mono text-blue-400 bg-slate-800/50" id="foot-rev">47.250 €</td>
+                <td class="py-3.5 px-3 text-right font-mono text-amber-400" id="foot-var">-6.426 €</td>
+                <td class="py-3.5 px-3 text-right font-mono text-cyan-300" id="foot-gross">40.824 €</td>
+                <td class="py-3.5 px-2 text-center font-mono text-cyan-400" id="foot-margin">86,4%</td>
+                <td class="py-3.5 px-3 text-right font-mono text-rose-400" id="foot-fix">-33.600 €</td>
+                <td class="py-3.5 px-3 text-right font-mono text-emerald-400 bg-slate-800/30" id="foot-ebitda">+7.224 €</td>
+                <td class="py-3.5 px-3 text-right font-mono text-emerald-400 bg-slate-800/50" id="foot-cash">22.224 €</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Gràfic Combinat d'Evolució Mensual (Chart.js) -->
+      <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <h3 class="text-sm font-bold text-white">Trajectòria Econòmica Mensual: Ingressos vs Despeses i Tresoreria</h3>
+            <p class="text-xs text-slate-400">Evolució del flux de caixa reflectint el creixement progressiu de vehicles</p>
+          </div>
+          <span class="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/30">
+            BAI positiu sostingut des de M6
+          </span>
+        </div>
+        <div class="h-72">
+          <canvas id="monthlyPnlChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PESTANYA 3: SIMULADOR FINANCER INTERACTIU (SLIDERS)          -->
+    <!-- ============================================================ -->
+    <div id="tab-simulator" class="tab-content hidden space-y-6">
+      
+      <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-bold text-white">Simulador Dinàmic de Sensibilitat Financera</h2>
+          <p class="text-xs text-slate-400">
+            Ajusta les palanques operatives de preu i estructura de costos per analitzar en temps real l'impacte en la rendibilitat i el punt d'equilibri.
+          </p>
+        </div>
+        <button onclick="resetSimulator()" class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 transition flex items-center gap-1.5 border border-slate-700">
+          <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          Restablir Paràmetres Base
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Controls Sliders (Columna 1 i 2) -->
+        <div class="lg:col-span-2 bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-6">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+            Variables Clau del Model
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Slider 1: Preu Subscripció Camió/Mes -->
+            <div class="space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <label for="slider-sub-price" class="font-medium text-slate-200">Preu Subscripció per Camió (€/mes)</label>
+                <span class="font-bold text-cyan-400 font-mono text-sm" id="lbl-sub-price">35 €</span>
+              </div>
+              <input type="range" id="slider-sub-price" min="25" max="50" step="1" value="35" class="w-full" oninput="handleSimChange()">
+              <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                <span>25 €</span>
+                <span>35 € (Base)</span>
+                <span>50 €</span>
+              </div>
+            </div>
+
+            <!-- Slider 2: Set-up per Flota -->
+            <div class="space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <label for="slider-setup-fee" class="font-medium text-slate-200">Quota d'Integració i Set-up (€/flota)</label>
+                <span class="font-bold text-blue-400 font-mono text-sm" id="lbl-setup-fee">750 €</span>
+              </div>
+              <input type="range" id="slider-setup-fee" min="400" max="1200" step="50" value="750" class="w-full" oninput="handleSimChange()">
+              <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                <span>400 €</span>
+                <span>750 € (Estàndard)</span>
+                <span>1.200 €</span>
+              </div>
+            </div>
+
+            <!-- Slider 3: Despesa Fixa Mensual -->
+            <div class="space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <label for="slider-fixed-cost" class="font-medium text-slate-200">Despeses Fixes Mensuals (€/mes)</label>
+                <span class="font-bold text-rose-400 font-mono text-sm" id="lbl-fixed-cost">2.800 €</span>
+              </div>
+              <input type="range" id="slider-fixed-cost" min="2000" max="4500" step="100" value="2800" class="w-full" oninput="handleSimChange()">
+              <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                <span>2.000 € (Equip mínim)</span>
+                <span>2.800 € (Base)</span>
+                <span>4.500 €</span>
+              </div>
+            </div>
+
+            <!-- Slider 4: Despesa Variable per Vehicle -->
+            <div class="space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <label for="slider-var-cost" class="font-medium text-slate-200">Cost Variable Unitari (€/camió/mes)</label>
+                <span class="font-bold text-amber-400 font-mono text-sm" id="lbl-var-cost">6,30 €</span>
+              </div>
+              <input type="range" id="slider-var-cost" min="4.00" max="10.00" step="0.10" value="6.30" class="w-full" oninput="handleSimChange()">
+              <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                <span>4,00 €</span>
+                <span>6,30 € (APIs + Cloud)</span>
+                <span>10,00 €</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="p-3.5 bg-slate-950/70 rounded-xl border border-slate-800 text-xs text-slate-400 flex items-start gap-2.5">
+            <svg class="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div>
+              <strong class="text-slate-200">Comportament Operatiu:</strong> El model permet comprovar la robustesa davant oscil·lacions en el cost dels serveis d'IA i APIs cartogràfiques, així com avaluar escenaris comercials d'integració amb flotes més exigents.
+            </div>
+          </div>
+        </div>
+
+        <!-- Resultats Dinàmics en Temps Real (Columna 3) -->
+        <div class="bg-gradient-to-b from-slate-900 to-slate-950 p-6 rounded-2xl border border-slate-800 space-y-5 flex flex-col justify-between">
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300 border-b border-slate-800 pb-2">
+              Impacte Simulat (Any 1)
+            </h3>
+
+            <div class="space-y-3.5 mt-4">
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Facturació Total:</span>
+                <span class="text-base font-bold text-white font-mono" id="sim-res-rev">47.250 €</span>
+              </div>
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Despeses Variables:</span>
+                <span class="text-xs font-semibold text-amber-400 font-mono" id="sim-res-var">-6.426 €</span>
+              </div>
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Benefici Brut:</span>
+                <span class="text-xs font-semibold text-cyan-400 font-mono" id="sim-res-gross">40.824 €</span>
+              </div>
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Despeses Fixes:</span>
+                <span class="text-xs font-semibold text-rose-400 font-mono" id="sim-res-fix">-33.600 €</span>
+              </div>
+              <div class="pt-3 border-t border-slate-800 flex justify-between items-baseline">
+                <span class="text-sm font-bold text-white">BAI / EBITDA:</span>
+                <span class="text-xl font-black text-emerald-400 font-mono" id="sim-res-ebitda">+7.224 €</span>
+              </div>
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Marge EBITDA:</span>
+                <span class="font-bold text-cyan-400 font-mono" id="sim-res-margin">15,3%</span>
+              </div>
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Punt d'Equilibri:</span>
+                <span class="font-bold text-emerald-400 font-mono" id="sim-res-breakeven">Mes 6</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800/80 text-[11px] text-slate-400 space-y-1">
+            <span class="text-slate-200 font-semibold block">Tresoreria Final Prevista:</span>
+            <span class="text-lg font-bold text-emerald-400 font-mono block" id="sim-res-cash">22.224 €</span>
+            <span class="text-[10px] text-slate-500">Mantingut en terreny positiu en tot moment.</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PESTANYA 4: CALCULADORA DE RETORN DE LA INVERSIÓ (ROI)        -->
+    <!-- ============================================================ -->
+    <div id="tab-roi" class="tab-content hidden space-y-6">
+      
+      <div class="bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-900 p-6 rounded-2xl border border-emerald-500/20">
+        <div class="max-w-3xl space-y-2">
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+            Proposta de Valor B2B • Per què el Transportista contracta EvidOps 360
+          </div>
+          <h2 class="text-xl sm:text-2xl font-bold text-white">Calculadora del Retorn de la Inversió (ROI)</h2>
+          <p class="text-xs sm:text-sm text-slate-300">
+            En un sector amb marges d'entre el 3% i el 5%, la decisió de compra no depèn de les funcionalitats sinó de l'estalvi net directe. Demostració quantitativa de rendibilitat per a una flota mitjana.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Controls de la Flota Client -->
+        <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 space-y-5">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400 border-b border-slate-800 pb-3">
+            Dades Operatives de l'Empresa de Transport
+          </h3>
+
+          <!-- Mida de la Flota -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <label for="roi-fleet-size" class="font-medium text-slate-200">Mida de la Flota (Camions Actius)</label>
+              <span class="font-bold text-cyan-400 font-mono text-sm" id="lbl-roi-fleet">20 camions</span>
+            </div>
+            <input type="range" id="roi-fleet-size" min="5" max="80" step="5" value="20" class="w-full" oninput="updateROICalculator()">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>5 camions</span>
+              <span>20 (Flota Tipus)</span>
+              <span>80 camions</span>
+            </div>
+          </div>
+
+          <!-- Hores d'embús evitades per camió al mes -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <label for="roi-jam-hours" class="font-medium text-slate-200">Hores d'aturada evitades per vehicle/mes</label>
+              <span class="font-bold text-amber-400 font-mono text-sm" id="lbl-roi-jam">2,0 hores</span>
+            </div>
+            <input type="range" id="roi-jam-hours" min="0.5" max="6.0" step="0.5" value="2.0" class="w-full" oninput="updateROICalculator()">
+            <div class="text-[10px] text-slate-400">
+              Valoració d'aturada: <strong class="text-slate-200 font-mono">42 € / hora</strong> (estudi de costos de transport).
+            </div>
+          </div>
+
+          <!-- Estalvi en km buits i combustible (Tetris 3D) -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <label for="roi-empty-saving" class="font-medium text-slate-200">Estalvi mensual en càrrega 3D i buits</label>
+              <span class="font-bold text-emerald-400 font-mono text-sm" id="lbl-roi-empty">150 € / camió</span>
+            </div>
+            <input type="range" id="roi-empty-saving" min="50" max="350" step="10" value="150" class="w-full" oninput="updateROICalculator()">
+            <div class="text-[10px] text-slate-400">
+              Reducció del 15% de desplaçaments buits mitjançant l'optimització volumètrica.
+            </div>
+          </div>
+        </div>
+
+        <!-- Resultats del Balanç Econòmic del Client -->
+        <div class="lg:col-span-2 bg-gradient-to-br from-slate-900 to-slate-950 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between space-y-6">
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+              <div>
+                <h3 class="text-base font-bold text-white">Balanç Financer Mensual per al Transportista</h3>
+                <p class="text-xs text-slate-400">Comparativa directa: cost de llicència vs estalvi operatiu auditable</p>
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                Retorn Positiu Immediat
+              </span>
+            </div>
+
+            <!-- Targetes Comparatives -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+              
+              <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+                <span class="text-[11px] uppercase font-bold text-slate-400">Cost EvidOps 360</span>
+                <p class="text-2xl font-black text-rose-400 mt-1 font-mono" id="roi-res-cost">700 € / mes</p>
+                <span class="text-[10px] text-slate-500" id="roi-res-cost-sub">20 camions × 35 €</span>
+              </div>
+
+              <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
+                <span class="text-[11px] uppercase font-bold text-slate-400">Estalvi Operatiu Brut</span>
+                <p class="text-2xl font-black text-cyan-400 mt-1 font-mono" id="roi-res-savings">4.680 € / mes</p>
+                <span class="text-[10px] text-slate-500">Hores aturades + km buits</span>
+              </div>
+
+              <div class="bg-emerald-950/30 p-4 rounded-xl border border-emerald-500/30 text-center">
+                <span class="text-[11px] uppercase font-bold text-emerald-300">Benefici Net Client</span>
+                <p class="text-2xl font-black text-emerald-400 mt-1 font-mono" id="roi-res-net">+3.980 € / mes</p>
+                <span class="text-[10px] text-emerald-400 font-semibold" id="roi-res-annual">47.760 € anuals</span>
+              </div>
+
+            </div>
+
+            <!-- Mètrica de Payback -->
+            <div class="mt-6 p-4 rounded-xl bg-slate-800/40 border border-slate-700/60 flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <span class="text-xs text-slate-400 uppercase font-semibold">Període de Retorn de la Inversió (Payback)</span>
+                <div class="text-3xl font-black text-emerald-400 font-mono mt-0.5 flex items-baseline gap-2">
+                  <span id="roi-res-payback">4,5 dies</span>
+                  <span class="text-xs text-slate-300 font-normal">per amortitzar la quota mensual completa</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs text-slate-400 uppercase font-semibold">Ràtio de Retorn</span>
+                <p class="text-2xl font-black text-white font-mono mt-0.5" id="roi-res-ratio">6,7x</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Argument de Venda per al Tribunal -->
+          <div class="p-4 rounded-xl bg-cyan-950/20 border border-cyan-500/20 text-xs text-slate-300 space-y-1.5">
+            <span class="font-bold text-cyan-400 flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Argumentari d'Adopció al Mercat:
+            </span>
+            <p class="text-slate-300">
+              «Evitar únicament 50 minuts d'aturada imprevista per camió al mes ja sufraga el 100% del cost de la subscripció a EvidOps 360. El transportista obté un impacte multiplicador directe en el seu compte de resultats des del primer mes d'ús.»
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PESTANYA 5: PROJECCIÓ MULTIANUAL (3 ANYS)                     -->
+    <!-- ============================================================ -->
+    <div id="tab-projections" class="tab-content hidden space-y-6">
+      
+      <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+        <div class="max-w-3xl space-y-2">
+          <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider">Escalabilitat del Model de Negoci (2026 - 2029)</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-white">Full de Ruta i Projecció a 3 Anys</h2>
+          <p class="text-xs sm:text-sm text-slate-300">
+            Model d'escalat fonamentat en una penetració de mercat progressiva al corredor mediterrani i grans operadores logístiques, aprofitant el palanquejament operatiu característic del programari al núvol.
+          </p>
+        </div>
+
+        <!-- Taula Comparativa a 3 Anys -->
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 text-slate-400">
+                <th class="py-3 px-4 font-semibold">Mètrica d'Explotació</th>
+                <th class="py-3 px-4 font-semibold text-center bg-cyan-950/20 text-cyan-300 rounded-t-lg">Any 1 (Llançament)</th>
+                <th class="py-3 px-4 font-semibold text-center bg-blue-950/20 text-blue-300 rounded-t-lg">Any 2 (Escalat)</th>
+                <th class="py-3 px-4 font-semibold text-center bg-emerald-950/20 text-emerald-300 rounded-t-lg">Any 3 (Consolidació)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 font-mono text-slate-300">
+              <tr>
+                <td class="py-3 px-4 font-sans font-medium text-white">Flota Connectada (Final Any)</td>
+                <td class="py-3 px-4 text-center font-bold text-cyan-400">150 camions</td>
+                <td class="py-3 px-4 text-center font-bold text-blue-400">600 camions</td>
+                <td class="py-3 px-4 text-center font-bold text-emerald-400">1.800 camions</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 font-sans font-medium text-slate-300">Flotes / Operadors Actius</td>
+                <td class="py-3 px-4 text-center">12 flotes</td>
+                <td class="py-3 px-4 text-center">~30 flotes</td>
+                <td class="py-3 px-4 text-center">~90 flotes</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 font-sans font-medium text-slate-300">Facturació Total Any</td>
+                <td class="py-3 px-4 text-center font-bold text-white">47.250 €</td>
+                <td class="py-3 px-4 text-center font-bold text-white">252.000 €</td>
+                <td class="py-3 px-4 text-center font-bold text-white">756.000 €</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 font-sans font-medium text-slate-300">Despeses Operatives (Fix + Var)</td>
+                <td class="py-3 px-4 text-center text-rose-400">40.026 €</td>
+                <td class="py-3 px-4 text-center text-rose-400">150.000 €</td>
+                <td class="py-3 px-4 text-center text-rose-400">336.000 €</td>
+              </tr>
+              <tr class="bg-emerald-950/20 font-bold">
+                <td class="py-3.5 px-4 font-sans text-white flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span> EBITDA / Resultat Explotació
+                </td>
+                <td class="py-3.5 px-4 text-center text-emerald-400 text-base">+7.224 €</td>
+                <td class="py-3.5 px-4 text-center text-emerald-400 text-base">+102.000 €</td>
+                <td class="py-3.5 px-4 text-center text-emerald-400 text-base">+420.000 €</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 font-sans font-medium text-slate-300">Marge EBITDA (%)</td>
+                <td class="py-3 px-4 text-center text-cyan-400 font-bold">15,3%</td>
+                <td class="py-3 px-4 text-center text-cyan-400 font-bold">40,5%</td>
+                <td class="py-3 px-4 text-center text-cyan-400 font-bold">55,6%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Gràfic d'Escalabilitat Multianual -->
+      <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <h3 class="text-sm font-bold text-white">Evolució d'Ingressos vs OPEX vs EBITDA (3 Anys)</h3>
+            <p class="text-xs text-slate-400">Demostració de l'expansió de marges un cop amortitzada l'estructura fixa de desenvolupament</p>
+          </div>
+          <span class="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/30">
+            55,6% Marge a Consolidació
+          </span>
+        </div>
+        <div class="h-72">
+          <canvas id="multiYearBarChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- PEU DE PÀGINA CORPORATIU                                      -->
+  <!-- ============================================================ -->
+  <footer class="border-t border-slate-800 bg-[#070b14] py-4 text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center space-x-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span class="font-medium text-slate-300">EvidOps 360</span>
+        <span>• Plataforma d'Operacions i Intel·ligència Logística</span>
+      </div>
+      <div class="text-slate-500 font-mono">
+        © EvidOps 360 Technologies S.L. • Tots els drets reservats
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================ -->
+  <!-- LÒGICA JAVASCRIPT & MOTOR MATEMÀTIC EN TEMPS REAL             -->
+  <!-- ============================================================ -->
+  <script>
+    // --- ESTAT GLOBAL DEL MODEL FINANCER ---
+    const monthlyTrucksDistribution = [15, 25, 40, 50, 65, 80, 95, 110, 120, 130, 140, 150];
+    const initialCash = 15000; // Fons de maniobra inicial
+
+    // Paràmetres modificables amb valors base
+    let state = {
+      subPrice: 35.0,      // € / vehicle / mes
+      setupFee: 750.0,     // € / flota nova
+      fixedMonthly: 2800.0,// € / mes (2000 equip, 300 cloud base, 300 llicències, 200 gestoria)
+      varCostPerTruck: 6.30,// € / vehicle / mes (2.50 trànsit, 1.80 IA veu, 2.00 còmput)
+      addonPerTruck: 2.50  // € / vehicle / mes (duanes + cadena de fred)
+    };
+
+    // Instàncies dels gràfics Chart.js
+    let doughnutChart = null;
+    let monthlyPnlChart = null;
+    let multiYearBarChart = null;
+
+    // --- GESTIÓ DE PESTANYES ---
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-cyan-500/15', 'text-cyan-400', 'border', 'border-cyan-500/30');
+        btn.classList.add('text-slate-400');
+      });
+
+      const target = document.getElementById(tabId);
+      if (target) {
+        target.classList.remove('hidden');
+      }
+
+      const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabId));
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-400');
+        activeBtn.classList.add('active', 'bg-cyan-500/15', 'text-cyan-400', 'border', 'border-cyan-500/30');
+      }
+
+      // Redibuixar gràfics per redimensionar correctament el canvas en canviar de pestanya
+      setTimeout(() => {
+        if (tabId === 'tab-overview' && doughnutChart) doughnutChart.resize();
+        if (tabId === 'tab-pnl' && monthlyPnlChart) monthlyPnlChart.resize();
+        if (tabId === 'tab-projections' && multiYearBarChart) multiYearBarChart.resize();
+      }, 50);
+    }
+
+    // --- RECALCULACIÓ DEL MOTOR MATEMÀTIC ---
+    function computeFinancials() {
+      let cumCash = initialCash;
+      const rows = [];
+      let totalSub = 0;
+      let totalSetup = 0;
+      let totalAddons = 0;
+      let totalRev = 0;
+      let totalVar = 0;
+      let totalGross = 0;
+      let totalFix = 0;
+      let totalEbitda = 0;
+      let breakevenMonth = null;
+      let breakevenBai = 0;
+
+      for (let m = 0; m < 12; m++) {
+        const monthNum = m + 1;
+        const trucks = monthlyTrucksDistribution[m];
+        
+        // 1 flota incorporada per mes (12 flotes en total al tancament)
+        const subRev = trucks * state.subPrice;
+        const setupRev = state.setupFee;
+        const addonRev = trucks * state.addonPerTruck;
+        const monthRev = subRev + setupRev + addonRev;
+
+        const varCost = trucks * state.varCostPerTruck;
+        const grossProfit = monthRev - varCost;
+        const grossMarginPct = (grossProfit / monthRev) * 100;
+
+        const fixCost = state.fixedMonthly;
+        const ebitda = grossProfit - fixCost;
+        cumCash += ebitda;
+
+        if (ebitda >= 0 && breakevenMonth === null) {
+          breakevenMonth = monthNum;
+          breakevenBai = ebitda;
+        }
+
+        totalSub += subRev;
+        totalSetup += setupRev;
+        totalAddons += addonRev;
+        totalRev += monthRev;
+        totalVar += varCost;
+        totalGross += grossProfit;
+        totalFix += fixCost;
+        totalEbitda += ebitda;
+
+        rows.push({
+          month: monthNum,
+          trucks,
+          subRev,
+          setupRev,
+          addonRev,
+          monthRev,
+          varCost,
+          grossProfit,
+          grossMarginPct,
+          fixCost,
+          ebitda,
+          cumCash
+        });
+      }
+
+      const totalGrossMarginPct = (totalGross / totalRev) * 100;
+      const totalEbitdaMarginPct = (totalEbitda / totalRev) * 100;
+
+      return {
+        rows,
+        totalSub,
+        totalSetup,
+        totalAddons,
+        totalRev,
+        totalVar,
+        totalGross,
+        totalGrossMarginPct,
+        totalFix,
+        totalEbitda,
+        totalEbitdaMarginPct,
+        finalCash: cumCash,
+        breakevenMonth: breakevenMonth || 6,
+        breakevenBai: breakevenBai || 446
+      };
+    }
+
+    // --- ACTUALITZACIÓ DEL DOM ---
+    function renderApp() {
+      const fin = computeFinancials();
+
+      // 1. Targetes Panell Executiu
+      document.getElementById('card-trucks').textContent = "150";
+      document.getElementById('card-rev').textContent = formatEuro(fin.totalRev);
+      document.getElementById('card-gross').textContent = fin.totalGrossMarginPct.toFixed(1).replace('.', ',') + "%";
+      document.getElementById('card-gross-abs').textContent = formatEuro(fin.totalGross) + " de marge";
+      document.getElementById('card-be').textContent = "Mes " + fin.breakevenMonth;
+      document.getElementById('card-be-val').textContent = (fin.breakevenBai >= 0 ? "+" : "") + formatEuro(fin.breakevenBai) + " BAI";
+      document.getElementById('card-ebitda').textContent = (fin.totalEbitda >= 0 ? "+" : "") + formatEuro(fin.totalEbitda);
+      document.getElementById('card-ebitda-pct').textContent = fin.totalEbitdaMarginPct.toFixed(1).replace('.', ',') + "% de marge net";
+      document.getElementById('card-cash').textContent = formatEuro(fin.finalCash);
+
+      // Hero banner indicators
+      document.getElementById('overview-kpi-gross-margin').textContent = fin.totalGrossMarginPct.toFixed(1).replace('.', ',') + "%";
+      document.getElementById('overview-kpi-breakeven').textContent = "Mes " + fin.breakevenMonth;
+
+      // 2. Fluxos d'ingressos (Targetes i Barres)
+      const subPct = ((fin.totalSub / fin.totalRev) * 100).toFixed(1);
+      const setupPct = ((fin.totalSetup / fin.totalRev) * 100).toFixed(1);
+      const addonsPct = ((fin.totalAddons / fin.totalRev) * 100).toFixed(1);
+
+      document.getElementById('stream-val-sub').textContent = formatEuro(fin.totalSub);
+      document.getElementById('stream-pct-sub').textContent = subPct.replace('.', ',') + "%";
+      document.getElementById('stream-val-setup').textContent = formatEuro(fin.totalSetup);
+      document.getElementById('stream-pct-setup').textContent = setupPct.replace('.', ',') + "%";
+      document.getElementById('stream-val-addons').textContent = formatEuro(fin.totalAddons);
+      document.getElementById('stream-pct-addons').textContent = addonsPct.replace('.', ',') + "%";
+
+      document.getElementById('bar-stream-sub').style.width = subPct + "%";
+      document.getElementById('bar-stream-setup').style.width = setupPct + "%";
+      document.getElementById('bar-stream-addons').style.width = addonsPct + "%";
+
+      // 3. Taula Compte d'Explotació (Tab 2)
+      const tbody = document.getElementById('pnl-table-rows');
+      tbody.innerHTML = '';
+      fin.rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-800/40 transition";
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 font-semibold text-slate-300">Mes ${r.month}</td>
+          <td class="py-2.5 px-2 text-right font-mono text-cyan-300 font-bold">${r.trucks}</td>
+          <td class="py-2.5 px-2.5 text-right font-mono">${formatEuro(r.subRev)}</td>
+          <td class="py-2.5 px-2 text-right font-mono">${formatEuro(r.setupRev)}</td>
+          <td class="py-2.5 px-2 text-right font-mono text-indigo-300">${formatEuro(r.addonRev)}</td>
+          <td class="py-2.5 px-3 text-right font-mono font-bold text-white bg-slate-800/30">${formatEuro(r.monthRev)}</td>
+          <td class="py-2.5 px-3 text-right font-mono text-amber-400">-${formatEuro(r.varCost)}</td>
+          <td class="py-2.5 px-3 text-right font-mono text-cyan-300 font-semibold">${formatEuro(r.grossProfit)}</td>
+          <td class="py-2.5 px-2 text-center font-mono text-slate-400">${r.grossMarginPct.toFixed(1).replace('.', ',')}%</td>
+          <td class="py-2.5 px-3 text-right font-mono text-rose-400">-${formatEuro(r.fixCost)}</td>
+          <td class="py-2.5 px-3 text-right font-mono font-bold ${r.ebitda >= 0 ? 'text-emerald-400' : 'text-rose-400'} bg-slate-800/20">
+            ${r.ebitda >= 0 ? '+' : ''}${formatEuro(r.ebitda)}
+          </td>
+          <td class="py-2.5 px-3 text-right font-mono font-bold text-white bg-slate-800/40">${formatEuro(r.cumCash)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Peu de taula
+      document.getElementById('foot-trucks').textContent = "150";
+      document.getElementById('foot-sub').textContent = formatEuro(fin.totalSub);
+      document.getElementById('foot-setup').textContent = formatEuro(fin.totalSetup);
+      document.getElementById('foot-addons').textContent = formatEuro(fin.totalAddons);
+      document.getElementById('foot-rev').textContent = formatEuro(fin.totalRev);
+      document.getElementById('foot-var').textContent = "-" + formatEuro(fin.totalVar);
+      document.getElementById('foot-gross').textContent = formatEuro(fin.totalGross);
+      document.getElementById('foot-margin').textContent = fin.totalGrossMarginPct.toFixed(1).replace('.', ',') + "%";
+      document.getElementById('foot-fix').textContent = "-" + formatEuro(fin.totalFix);
+      document.getElementById('foot-ebitda').textContent = (fin.totalEbitda >= 0 ? "+" : "") + formatEuro(fin.totalEbitda);
+      document.getElementById('foot-cash').textContent = formatEuro(fin.finalCash);
+
+      // 4. Simulador Dinàmic (Tab 3)
+      document.getElementById('sim-res-rev').textContent = formatEuro(fin.totalRev);
+      document.getElementById('sim-res-var').textContent = "-" + formatEuro(fin.totalVar);
+      document.getElementById('sim-res-gross').textContent = formatEuro(fin.totalGross);
+      document.getElementById('sim-res-fix').textContent = "-" + formatEuro(fin.totalFix);
+      document.getElementById('sim-res-ebitda').textContent = (fin.totalEbitda >= 0 ? "+" : "") + formatEuro(fin.totalEbitda);
+      document.getElementById('sim-res-margin').textContent = fin.totalEbitdaMarginPct.toFixed(1).replace('.', ',') + "%";
+      document.getElementById('sim-res-breakeven').textContent = "Mes " + fin.breakevenMonth;
+      document.getElementById('sim-res-cash').textContent = formatEuro(fin.finalCash);
+
+      // 5. Actualització de Gràfics
+      updateCharts(fin);
+    }
+
+    // --- GESTIÓ DELS CONTROLS LLISCANTS (SLIDERS) ---
+    function handleSimChange() {
+      state.subPrice = parseFloat(document.getElementById('slider-sub-price').value);
+      state.setupFee = parseFloat(document.getElementById('slider-setup-fee').value);
+      state.fixedMonthly = parseFloat(document.getElementById('slider-fixed-cost').value);
+      state.varCostPerTruck = parseFloat(document.getElementById('slider-var-cost').value);
+
+      document.getElementById('lbl-sub-price').textContent = `${state.subPrice} €`;
+      document.getElementById('lbl-setup-fee').textContent = `${state.setupFee} €`;
+      document.getElementById('lbl-fixed-cost').textContent = `${state.fixedMonthly.toLocaleString('ca-ES')} €`;
+      document.getElementById('lbl-var-cost').textContent = `${state.varCostPerTruck.toFixed(2).replace('.', ',')} €`;
+
+      renderApp();
+      updateROICalculator();
+    }
+
+    function resetSimulator() {
+      state.subPrice = 35.0;
+      state.setupFee = 750.0;
+      state.fixedMonthly = 2800.0;
+      state.varCostPerTruck = 6.30;
+
+      document.getElementById('slider-sub-price').value = 35;
+      document.getElementById('slider-setup-fee').value = 750;
+      document.getElementById('slider-fixed-cost').value = 2800;
+      document.getElementById('slider-var-cost').value = 6.30;
+
+      document.getElementById('lbl-sub-price').textContent = "35 €";
+      document.getElementById('lbl-setup-fee').textContent = "750 €";
+      document.getElementById('lbl-fixed-cost').textContent = "2.800 €";
+      document.getElementById('lbl-var-cost').textContent = "6,30 €";
+
+      renderApp();
+      updateROICalculator();
+    }
+
+    // --- CALCULADORA DE ROI CLIENT (TAB 4) ---
+    function updateROICalculator() {
+      const fleet = parseInt(document.getElementById('roi-fleet-size').value);
+      const jamHours = parseFloat(document.getElementById('roi-jam-hours').value);
+      const emptySaving = parseFloat(document.getElementById('roi-empty-saving').value);
+
+      document.getElementById('lbl-roi-fleet').textContent = `${fleet} camions`;
+      document.getElementById('lbl-roi-jam').textContent = `${jamHours.toFixed(1).replace('.', ',')} hores`;
+      document.getElementById('lbl-roi-empty').textContent = `${emptySaving} € / camió`;
+
+      // Càlculs operatius
+      const monthlyCost = fleet * state.subPrice;
+      const jamSavingValue = fleet * jamHours * 42.0; // 42 € / hora segons estudi de costos
+      const emptySavingValue = fleet * emptySaving;
+      const totalGrossSaving = jamSavingValue + emptySavingValue;
+      const netBenefit = totalGrossSaving - monthlyCost;
+      const ratio = (totalGrossSaving / monthlyCost).toFixed(1).replace('.', ',');
+      const paybackDays = ((monthlyCost / totalGrossSaving) * 30).toFixed(1).replace('.', ',');
+
+      document.getElementById('roi-res-cost').textContent = formatEuro(monthlyCost) + " / mes";
+      document.getElementById('roi-res-cost-sub').textContent = `${fleet} camions × ${state.subPrice} €`;
+      document.getElementById('roi-res-savings').textContent = formatEuro(totalGrossSaving) + " / mes";
+      document.getElementById('roi-res-net').textContent = "+" + formatEuro(netBenefit) + " / mes";
+      document.getElementById('roi-res-annual').textContent = formatEuro(netBenefit * 12) + " anuals";
+      document.getElementById('roi-res-ratio').textContent = ratio + "x";
+      document.getElementById('roi-res-payback').textContent = paybackDays + " dies";
+    }
+
+    // --- INICIALITZACIÓ I ACTUALITZACIÓ DE GRÀFICS CHART.JS ---
+    function initCharts() {
+      // 1. Doughnut Chart: Distribució dels 3 Fluxos
+      const ctxDoughnut = document.getElementById('revenueDoughnutChart').getContext('2d');
+      doughnutChart = new Chart(ctxDoughnut, {
+        type: 'doughnut',
+        data: {
+          labels: ['Subscripcions (Recurrent)', 'Set-up & Integració', 'Add-ons Avançats'],
+          datasets: [{
+            data: [75.6, 19.0, 5.4],
+            backgroundColor: ['#38bdf8', '#3b82f6', '#818cf8'],
+            borderColor: '#0f172a',
+            borderWidth: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: '#cbd5e1', font: { size: 10 }, boxWidth: 12 }
+            }
+          },
+          cutout: '65%'
+        }
+      });
+
+      // 2. Gràfic Combinat Mensual (Compte d'Explotació)
+      const ctxMonthly = document.getElementById('monthlyPnlChart').getContext('2d');
+      monthlyPnlChart = new Chart(ctxMonthly, {
+        type: 'line',
+        data: {
+          labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10', 'M11', 'M12'],
+          datasets: [
+            {
+              type: 'bar',
+              label: 'Total Ingressos (€)',
+              data: [],
+              backgroundColor: '#38bdf8',
+              borderRadius: 4,
+              order: 2
+            },
+            {
+              type: 'bar',
+              label: 'Despeses Totals (Fix + Var) (€)',
+              data: [],
+              backgroundColor: '#f43f5e',
+              borderRadius: 4,
+              order: 3
+            },
+            {
+              type: 'line',
+              label: 'Tresoreria Acumulada (€)',
+              data: [],
+              borderColor: '#10b981',
+              backgroundColor: 'rgba(16, 185, 129, 0.1)',
+              borderWidth: 2.5,
+              tension: 0.3,
+              fill: true,
+              order: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: '#cbd5e1', font: { size: 11 } }
+            }
+          },
+          scales: {
+            x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+            y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+          }
+        }
+      });
+
+      // 3. Gràfic de Projecció a 3 Anys
+      const ctxMulti = document.getElementById('multiYearBarChart').getContext('2d');
+      multiYearBarChart = new Chart(ctxMulti, {
+        type: 'bar',
+        data: {
+          labels: ['Any 1 (Llançament)', 'Any 2 (Escalat)', 'Any 3 (Consolidació)'],
+          datasets: [
+            {
+              label: 'Facturació Total (€)',
+              data: [47250, 252000, 756000],
+              backgroundColor: '#38bdf8',
+              borderRadius: 5
+            },
+            {
+              label: 'Costos Operatius (OPEX) (€)',
+              data: [40026, 150000, 336000],
+              backgroundColor: '#64748b',
+              borderRadius: 5
+            },
+            {
+              label: 'EBITDA / Explotació (€)',
+              data: [7224, 102000, 420000],
+              backgroundColor: '#10b981',
+              borderRadius: 5
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: '#e2e8f0', font: { size: 11 } }
+            }
+          },
+          scales: {
+            x: { grid: { color: '#1e293b' }, ticks: { color: '#e2e8f0' } },
+            y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+          }
+        }
+      });
+    }
+
+    function updateCharts(fin) {
+      if (doughnutChart) {
+        doughnutChart.data.datasets[0].data = [
+          Math.round(fin.totalSub),
+          Math.round(fin.totalSetup),
+          Math.round(fin.totalAddons)
+        ];
+        doughnutChart.update();
+      }
+
+      if (monthlyPnlChart) {
+        monthlyPnlChart.data.datasets[0].data = fin.rows.map(r => Math.round(r.monthRev));
+        monthlyPnlChart.data.datasets[1].data = fin.rows.map(r => Math.round(r.varCost + r.fixCost));
+        monthlyPnlChart.data.datasets[2].data = fin.rows.map(r => Math.round(r.cumCash));
+        monthlyPnlChart.update();
+      }
+    }
+
+    // Formatador d'euros
+    function formatEuro(val) {
+      return Math.round(val).toLocaleString('ca-ES') + " €";
+    }
+
+    // Inicialització en carregar la pàgina
+    window.onload = function() {
+      initCharts();
+      renderApp();
+      updateROICalculator();
+    };
+  </script>
+</body>
+</html>
